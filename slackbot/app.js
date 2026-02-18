@@ -7,6 +7,7 @@ import 'dotenv/config';
 config();
 
 const db = drizzle(process.env.DATABASE_URL);
+app.logger.info("Database connected")
 
 /** Initialization */
 const app = new App({
