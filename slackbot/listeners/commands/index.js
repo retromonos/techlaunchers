@@ -176,24 +176,43 @@ export const register = (app) => {
           break;
         case "list":
           const launches = await db.select().from(launchTable).where(eq(launchTable.date, (new Date()).toISOString().substring(0,10)))
-          const launchBlocks = launches.map((v) => {
-            return {
-              "type": "rich_text_section",
+          const launchBlocks = []
+          launches.forEach((v) => {
+            launchBlocks.push({
+              "type": "section",
+              "text": {
+                "type": "plain_text",
+                "text": `<@${v.authorId}>: ${v.name} (${v.time})`,
+                "emoji": true
+              }
+            },
+            {
+              "type": "actions",
               "elements": [
                 {
-                  "type": "text",
-                  "text": `<@${v.authorId}>: `,
+                  "type": "button",
+                  "style": "primary",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Join as Passenger",
+                    "emoji": true
+                  },
+                  "value": "passenger",
+                  "action_id": "joinPassenger"
                 },
                 {
-                  "type": "text",
-                  "text": v.name,
-                },
-                {
-                  "type": "text",
-                  "text": " ("+v.time+")",
+                  "type": "button",
+                  "style": "primary",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Join as Driver",
+                    "emoji": true
+                  },
+                  "value": "driver",
+                  "action_id": "joinDriver"
                 }
               ]
-            }
+            })
           })
 
           const result2 = await client.chat.postMessage({
@@ -208,19 +227,7 @@ export const register = (app) => {
                   "emoji": true
                 }
               },
-              {
-                "type": "rich_text",
-                "elements": [
-                  {
-                    "type": "rich_text_list",
-                    "style": "bullet",
-                    "indent": 0,
-                    "elements": [
-                      ...launchBlocks
-                    ]
-                  }
-                ]
-              }
+              ...launchBlocks
             ]
           })
 
