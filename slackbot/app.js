@@ -6,11 +6,10 @@ import 'dotenv/config';
 
 config();
 
-const db = drizzle(process.env.DATABASE_URL);
-app.logger.info("Database connected")
+export const db = drizzle(process.env.DATABASE_URL);
 
 /** Initialization */
-const app = new App({
+export const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
