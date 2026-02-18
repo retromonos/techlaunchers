@@ -32,4 +32,8 @@ export const register = (app) => {
 
     logger.info(newLaunch)
   });
+
+  app.view('launch_list', async ({ ack, body, view, logger }) => {
+    await ack();
+  });
 };

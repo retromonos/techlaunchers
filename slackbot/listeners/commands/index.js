@@ -1,3 +1,7 @@
+import { db } from "../../app.js";
+import { launchTable } from "../../schema.js";
+import { eq, lt, gte, ne } from 'drizzle-orm';
+
 export const register = (app) => {
   app.command('/launch', async ({ command, body, ack, client, say, logger }) => {
     try {
@@ -8,165 +12,225 @@ export const register = (app) => {
       const commandText = command.text;
       const triggerId = body.trigger_id;
 
-      const result = await client.views.open({
-        // Pass a valid trigger_id within 3 seconds of receiving it
-        trigger_id: triggerId,
-        // View payload
-        view: {
-          type: 'modal',
-          // View identifier
-          callback_id: 'launch_create',
-          title: {
-            type: 'plain_text',
-            text: 'Create a new Launch'
-          },
-          blocks: [
-            {
-              "type": "input",
-              "block_id": "location",
-              "element": {
-                "type": "plain_text_input",
-                "action_id": "plain_text_input-action"
+      switch(commandText) {
+        case "create":
+          const result = await client.views.open({
+            // Pass a valid trigger_id within 3 seconds of receiving it
+            trigger_id: triggerId,
+            // View payload
+            view: {
+              type: 'modal',
+              // View identifier
+              callback_id: 'launch_create',
+              title: {
+                type: 'plain_text',
+                text: 'Create a new Launch'
               },
-              "label": {
-                "type": "plain_text",
-                "text": "Location",
-                "emoji": true
-              },
-              "optional": false
-            },
-            {
-              "type": "divider"
-            },
-            {
-              "type": "input",
-              "block_id": "desc",
-              "element": {
-                "type": "plain_text_input",
-                "action_id": "plain_text_input-action2"
-              },
-              "label": {
-                "type": "plain_text",
-                "text": "Description",
-                "emoji": true
-              },
-              "optional": false
-            },
-            {
-              "type": "divider"
-            },
-            {
-              "type": "input",
-              "block_id": "time",
-              "element": {
-                "type": "static_select",
-                "placeholder": {
-                  "type": "plain_text",
-                  "text": "Select an item",
-                  "emoji": true
+              blocks: [
+                {
+                  "type": "input",
+                  "block_id": "location",
+                  "element": {
+                    "type": "plain_text_input",
+                    "action_id": "plain_text_input-action"
+                  },
+                  "label": {
+                    "type": "plain_text",
+                    "text": "Location",
+                    "emoji": true
+                  },
+                  "optional": false
                 },
-                "options": [
-                  {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "11:00am",
-                      "emoji": true
-                    },
-                    "value": "1100"
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "input",
+                  "block_id": "desc",
+                  "element": {
+                    "type": "plain_text_input",
+                    "action_id": "plain_text_input-action2"
                   },
-                  {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "11:30am",
-                      "emoji": true
-                    },
-                    "value": "1130"
+                  "label": {
+                    "type": "plain_text",
+                    "text": "Description",
+                    "emoji": true
                   },
-                  {
-                    "text": {
+                  "optional": false
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "input",
+                  "block_id": "time",
+                  "element": {
+                    "type": "static_select",
+                    "placeholder": {
                       "type": "plain_text",
-                      "text": "12:00pm",
+                      "text": "Select an item",
                       "emoji": true
                     },
-                    "value": "1200"
+                    "options": [
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "11:00am",
+                          "emoji": true
+                        },
+                        "value": "1100"
+                      },
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "11:30am",
+                          "emoji": true
+                        },
+                        "value": "1130"
+                      },
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "12:00pm",
+                          "emoji": true
+                        },
+                        "value": "1200"
+                      },
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "12:30pm",
+                          "emoji": true
+                        },
+                        "value": "1230"
+                      },
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "1:00pm",
+                          "emoji": true
+                        },
+                        "value": "1300"
+                      },
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "1:30pm",
+                          "emoji": true
+                        },
+                        "value": "1330"
+                      },
+                      {
+                        "text": {
+                          "type": "plain_text",
+                          "text": "2:00pm",
+                          "emoji": true
+                        },
+                        "value": "1400"
+                      }
+                    ],
+                    "action_id": "static_select-action"
                   },
-                  {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "12:30pm",
-                      "emoji": true
-                    },
-                    "value": "1230"
+                  "label": {
+                    "type": "plain_text",
+                    "text": "Time",
+                    "emoji": true
                   },
-                  {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "1:00pm",
-                      "emoji": true
-                    },
-                    "value": "1300"
-                  },
-                  {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "1:30pm",
-                      "emoji": true
-                    },
-                    "value": "1330"
-                  },
-                  {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "2:00pm",
-                      "emoji": true
-                    },
-                    "value": "1400"
-                  }
-                ],
-                "action_id": "static_select-action"
-              },
-              "label": {
-                "type": "plain_text",
-                "text": "Time",
-                "emoji": true
-              },
-              "optional": false
-            },
-            {
-              "type": "divider"
-            },
-            {
-              "type": "actions",
-              "block_id": "takeBack",
+                  "optional": false
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "actions",
+                  "block_id": "takeBack",
+                  "elements": [
+                    {
+                      "type": "checkboxes",
+                      "options": [
+                        {
+                          "text": {
+                            "type": "plain_text",
+                            "text": "Take back to the office?",
+                            "emoji": true
+                          },
+                          "description": {
+                            "type": "plain_text",
+                            "text": "Check this box if we are bringing food back to the office after picking it up.",
+                            "emoji": true
+                          },
+                          "value": "true"
+                        }
+                      ],
+                      "action_id": "actionId-0"
+                    }
+                  ]
+                }
+              ],
+              submit: {
+                type: 'plain_text',
+                text: 'Submit'
+              }
+            }
+          });
+          break;
+        case "list":
+          const launches = await db.select().from(launchTable).where(eq(launchTable.date, (new Date()).toISOString().substring(0,10)))
+          const launchBlocks = launches.map((v) => {
+            return {
+              "type": "rich_text_section",
               "elements": [
                 {
-                  "type": "checkboxes",
-                  "options": [
-                    {
-                      "text": {
-                        "type": "plain_text",
-                        "text": "Take back to the office?",
-                        "emoji": true
-                      },
-                      "description": {
-                        "type": "plain_text",
-                        "text": "Check this box if we are bringing food back to the office after picking it up.",
-                        "emoji": true
-                      },
-                      "value": "true"
-                    }
-                  ],
-                  "action_id": "actionId-0"
+                  "type": "text",
+                  "text": `<@${v.authorId}>: `,
+                },
+                {
+                  "type": "text",
+                  "text": v.name,
+                },
+                {
+                  "type": "text",
+                  "text": " ("+v.time+")",
                 }
               ]
             }
-          ],
-          submit: {
-            type: 'plain_text',
-            text: 'Submit'
-          }
-        }
-      });
+          })
+
+          const result2 = await client.chat.postMessage({
+            token: process.env.SLACK_BOT_TOKEN,
+            channel: channelId,
+            blocks: [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Today's Launches",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "rich_text",
+                "elements": [
+                  {
+                    "type": "rich_text_list",
+                    "style": "bullet",
+                    "indent": 0,
+                    "elements": [
+                      ...launchBlocks
+                    ]
+                  }
+                ]
+              }
+            ]
+          })
+
+          logger.info((new Date()).toDateString())
+          break;
+        default:
+          logger.info("bad response")
+          break;
+      }
+      
   
     } catch (error) {
       logger.error('Error handling slash command:', error);
