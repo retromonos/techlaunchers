@@ -1,8 +1,12 @@
 import { App, LogLevel } from '@slack/bolt';
 import { config } from 'dotenv';
 import { registerListeners } from './listeners/index.js';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import 'dotenv/config';
 
 config();
+
+const db = drizzle(process.env.DATABASE_URL);
 
 /** Initialization */
 const app = new App({
