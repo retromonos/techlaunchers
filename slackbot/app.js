@@ -2,15 +2,15 @@ import { App, LogLevel } from '@slack/bolt';
 import { config } from 'dotenv';
 import { registerListeners } from './listeners/index.js';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import * as schema from './schema.js'
 import 'dotenv/config';
 
 config();
 
-const db = drizzle(process.env.DATABASE_URL);
-app.logger.info("Database connected")
+export const db = drizzle(process.env.DATABASE_URL, {schema});
 
 /** Initialization */
-const app = new App({
+export const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
