@@ -181,9 +181,8 @@ export const register = (app) => {
             launchBlocks.push({
               "type": "section",
               "text": {
-                "type": "plain_text",
+                "type": "mrkdwn",
                 "text": `<@${v.authorId}>: ${v.name} (${v.time})`,
-                "emoji": true
               }
             },
             {
@@ -218,6 +217,8 @@ export const register = (app) => {
           const result2 = await client.chat.postMessage({
             token: process.env.SLACK_BOT_TOKEN,
             channel: channelId,
+            link_names: true,
+            mrkdwn: false,
             blocks: [
               {
                 "type": "header",

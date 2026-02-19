@@ -51,13 +51,13 @@ export const register = (app) => {
         const result = await client.chat.postMessage({
           token: process.env.SLACK_BOT_TOKEN,
           channel: channelId,
+          link_names: true,
           blocks: [
             {
               "type": "section",
               "text": {
-                "type": "plain_text",
+                "type": "mrkdwn",
                 "text": `<@${part.userId}> joined ${launch.name} as a passenger!`,
-                "emoji": true
               }
             },
           ]
@@ -114,13 +114,13 @@ export const register = (app) => {
         const result = await client.chat.postMessage({
           token: process.env.SLACK_BOT_TOKEN,
           channel: channelId,
+          link_names: true,
           blocks: [
             {
               "type": "section",
               "text": {
-                "type": "plain_text",
+                "type": "mrkdwn",
                 "text": `<@${part.userId}> joined ${launch.name} as a driver!`,
-                "emoji": true
               }
             },
           ]
