@@ -197,7 +197,7 @@ export const register = (app) => {
                     "text": "Join as Passenger",
                     "emoji": true
                   },
-                  "value": "passenger",
+                  "value": v.id,
                   "action_id": "joinPassenger"
                 },
                 {
@@ -208,7 +208,7 @@ export const register = (app) => {
                     "text": "Join as Driver",
                     "emoji": true
                   },
-                  "value": "driver",
+                  "value": v.id,
                   "action_id": "joinDriver"
                 }
               ]
