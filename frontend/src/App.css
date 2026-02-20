@@ -1,14 +1,13 @@
 /* --- GIF Background Container --- */
 .background-container {
   position: relative;
-  width: 100%;
-  height: 100vh;               /* fill full viewport height */
-  min-height: 100vh;           /* fallback for small screens */
-  background-image: url('/Users/el704581/Desktop/dev/hack day/techlaunchers/frontend/src/assets/gif.gif'); /* your GIF path */
+  background-image: url('desert.png'); /* your GIF path */
   background-size: cover;       /* fill while keeping aspect ratio */
   background-position: center;  /* center the GIF */
   background-repeat: no-repeat; /* don’t tile */
-  overflow: hidden;             /* hide overflow */
+  overflow: scroll;             /* hide overflow */
+  width: 100vw;
+  height: 100vh;
 }
 
 
@@ -23,6 +22,15 @@
   z-index: 2;  /* above GIF but below content if needed */
 }
 
+.board-content {
+  width: 100%;
+}
+
+.horse {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
 /* --- Main board content over the GIF --- */
 .board-container {
@@ -62,28 +70,75 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 600px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-top: 32px;
 }
 
 .clock {
   margin-top: 0;
-  font-size: 18px;
+  font-size: 32px;
+  font-weight: bold;
   color: #fff; /* change to white for visibility over GIF */
   text-align: right;
   min-width: 100px;
+  margin-right: 24px;
+}
+
+.main-content {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 32px;
+  justify-content: space-between;
 }
 
 /* Cards container */
 .cards-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 20px;
+  padding-left: 16px;
+  padding-right: 16px;
+  grid-column: span 2 / span 2;
+}
+
+.stable-cont {
+  display: flex;
+  width: 30vw;
+  height: fit-content;
+  flex-direction: column;
+  background: brown;
+
+  
+
+  h3 {
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  
+}
+
+
+.stable {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  width: 28.2vw;
+  padding: 8px;
+  border: 4px solid brown;
+  background: green;
+  color: white;
 }
 
 /* Individual card */
 .request-card {
   display: flex;
-  background: rgba(0, 0, 0, 0.6); /* semi-transparent for visibility over GIF */
+  color: black;
+  background: rgba(255, 255, 255, 0.6); /* semi-transparent for visibility over GIF */
   border-radius: 10px;
   padding: 20px 25px;
   transition: box-shadow 0.2s ease-in-out;
@@ -103,20 +158,27 @@
   box-sizing: border-box;
 }
 
+.name-cont {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .restaurant-name {
   margin-top: 0;
   margin-bottom: 10px;
   font-size: 1.6rem;
-  color: #fff;
+  color: #000000;
 }
 
 /* Card left side - align posted time right */
 .time-ago {
-  color: #ccc;
-  font-size: 0.9rem;
+  color: #1a1a1a;
+  font-size: 1.5rem;
   margin-top: 8px;
   text-align: right;
-  width: 100%;
+  width: fit-content;
   font-style: italic;
 }
 
@@ -127,12 +189,13 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 8px;
+  justify-content: start;
+  gap: 0px;
 }
 
 .card-right p {
   margin: 0;
-  font-size: 1rem;
-  color: #fff;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #000000;
 }

@@ -20,6 +20,7 @@ export const register = (app) => {
             // View payload
             view: {
               type: 'modal',
+              private_metadata: channelId,
               // View identifier
               callback_id: 'launch_create',
               title: {
@@ -165,6 +166,31 @@ export const register = (app) => {
                       "action_id": "actionId-0"
                     }
                   ]
+                },
+                {
+                  "type": "actions",
+                  "block_id": "isDriving",
+                  "elements": [
+                    {
+                      "type": "checkboxes",
+                      "options": [
+                        {
+                          "text": {
+                            "type": "plain_text",
+                            "text": "Join as Driver?",
+                            "emoji": true
+                          },
+                          "description": {
+                            "type": "plain_text",
+                            "text": "Check this box if you are joining as a driver. Leave unchecked if you are a passenger.",
+                            "emoji": true
+                          },
+                          "value": "true"
+                        }
+                      ],
+                      "action_id": "actionId-111"
+                    }
+                  ]
                 }
               ],
               submit: {
@@ -184,8 +210,18 @@ export const register = (app) => {
                 "type": "mrkdwn",
                 "text": `<@${v.authorId}>: ${v.name} (${v.time})`,
               }
-            },
-            {
+            })
+
+            if(v.desc != "")
+            launchBlocks.push({
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": v.desc,
+              }
+            })
+
+            launchBlocks.push({
               "type": "actions",
               "elements": [
                 {
