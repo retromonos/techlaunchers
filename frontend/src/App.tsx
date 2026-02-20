@@ -128,10 +128,11 @@ function App() {
                   <p>Posted by <strong>{requests.participants.find((v)=>v.userId==req.authorId)?.name ?? "Unknown"}</strong></p>
                 </div>
                 <div className="card-right">
+                  {req.desc != "" && <div>{req.desc}</div>}
                   <p>{members[req.id] ? members[req.id].length : 0} launcher(s)</p>
-                  <div>
+                  <div className="name-cont2">
                     {members[req.id]?.map((v,i)=>{
-                      return<div>{`${v.name}${i < members[req.id].length - 1 ? ', ' : ""}`}</div>
+                      return<div>{`${v.isDriver ? "(D) ": ""}${v.name}${i < members[req.id].length - 1 ? ', ' : ""}`}</div>
                     })}
                   </div>
                 </div>
